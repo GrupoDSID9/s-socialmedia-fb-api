@@ -1,0 +1,47 @@
+#%RAML 1.0
+title: s-socialMedia-fb-api
+description: System API for Facebook
+mediaType:
+  - application/json
+version: v1
+protocols:
+  - HTTP
+
+types:
+  SocialMediaPost:
+    type: object
+    properties:
+      postCode: string
+      title: string
+      message: string
+      toSocialMedia:
+        type: string
+        enum: [FB]
+
+
+
+/SocialMediaPost:
+  post:
+    displayName: Facebook Post
+    description: Creates a Facebook Post
+    body:
+      type: SocialMediaPost
+    responses:
+      200:
+        body: 
+          application/json:
+            example:
+              message: Facaebook Post posted successfully
+              id : ID-FROM-FACEBOOK-API
+              postCode: 0000001
+      500:
+        body:
+          type: string
+          example: "Internal server error"
+      400:
+        body:
+          type: string
+          example: "Bad Request"
+
+
+      
