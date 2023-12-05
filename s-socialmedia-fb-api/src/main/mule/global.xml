@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd">
+    <http:listener-config name="s-socialmedia-fb-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="${api.port}" />
+    </http:listener-config>
+    <apikit:config name="s-socialmedia-fb-api-config" api="resource::6bfdfbd6-1d2e-4ffc-96e4-3a6ab65c6e06:s-socialmedia-fb-api:1.0.2:raml:zip:s-socialmedia-fb-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <global-property doc:name="Global Property" doc:id="5f96ab7f-a23a-4d32-9e2b-ee837173bf99" name="env" value="local" />
+    <configuration-properties doc:name="Configuration properties" doc:id="39f047a1-7cf9-401b-8666-23a71ee33b46" file="properties/${env}.yaml" />
+    <http:request-config name="HTTP_Request_configuration_FB" doc:name="HTTP Request configuration" doc:id="6a88e83f-364c-4f7b-82ad-fb8553bea905">
+        <http:request-connection host="graph.facebook.com" protocol="HTTPS">
+            <http:authentication>
+                <oauth:authorization-code-grant-type localCallbackConfig="s-socialmedia-fb-api-httpListenerConfig" localCallbackConfigPath="/oauth2callback" externalCallbackUrl="https://localhost:8081/oauth2callback" localAuthorizationUrl="https://localhost:8081/oauth/authorize" authorizationUrl="https://graph.facebook.com/oauth/authorize" clientId="697579152533836" clientSecret="77ca4644b941e5783b605c6598319fb5" scopes="pages_read_engagement, pages_manage_engagement, pages_manage_posts, pages_read_user_engagement" tokenUrl="https://graph.facebook.com/oauth/access_token" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4e771f0e-7d83-41d8-b7b2-c69d9b3b4501">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5d82d33a-d2a2-4c98-ad18-dc39f745467f">
+        <http:request-connection host="graph.facebook.com" protocol="HTTPS" />
+    </http:request-config>
+</mule>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="implementationSub_Flow_tokenR" doc:id="5bee1456-7dce-4fa1-b8a1-8c95b753f6d3" >
+		<set-variable value="#[payload.postCode]" doc:name="postCode" doc:id="84a32990-105d-40b3-a781-bd4c5d5dad9c" variableName="postCode" />
+		<set-variable value="#[payload.message]" doc:name="inComingpayload" doc:id="58c681c1-646f-471d-b313-02c60e052dc0" variableName="mensaje" />
+		<set-variable value="183534824840300" doc:name="pageid" doc:id="a4a75cea-fa11-4c0a-896f-76503ca678bd" variableName="pageid" />
+		<http:request method="GET" doc:name="RequestAccessToken" doc:id="560bd00c-2241-40d0-8eb5-f32ab1aa046c" config-ref="HTTP_Request_configuration_FB" path="/{page-id}?fields=access_token">
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"page-id" : vars.pageid
+}]]]></http:uri-params>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"access_token" : "EAAJ6cc2W6UwBOxZCDF8ckdUOODElh8kGea9FeNsKqZC2WnaflNoFhK81qshJvYadXkXxkJtuSCwrD6E7se4BE2C8DvjXwqw6kjQYOAlYgt2KFVMfYJK9EJCCQBY97QFwNC16yI5f70Ajv9RmBvMUExDpkW62neM1Bldx2cGR9NYG3WZBif64ZCPQDgqOo2yzMOMPyBGHTiqZC9zNMuRqUZAZBgZAlRVQk4JvJ7MZD"
+}]]]></http:query-params>
+		</http:request>
+		<set-variable doc:name="page-access-token" doc:id="696ddd53-5522-46de-b772-65f7049eb05b" variableName="pageaccesstoken" value="#[payload.access_token]"/>
+		<http:request method="POST" doc:name="PostFacebookPage" doc:id="e6c405a3-67f2-4a99-aa24-3e696bfc1407" config-ref="HTTP_Request_configuration_FB" path="/{page-id}/feed">
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"page-id" : vars.pageid
+}]]]></http:uri-params>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"message" : vars.mensaje,
+	"access_token" : "EAAJ6cc2W6UwBOzFFZC9uPgtbZBNet04d2AjEuToGMJ7ShbipX7tgLgAwNhViZAZBc4ghZAtZASAmWaklXfzN8MCRNwP7SpsZCejPhWdquQrjrvW5o7mhV1ZBaMBVqWzlw0ErDl6ZBaQ57FrppnyOmYAV2nB0sT6oyGnGcHX6BYz4TlstuyPkS2SykGhgeCtzteIrdMUAXMoIZD"
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger1" doc:id="5f71e018-e2dc-4787-af8e-92cbd33d5462" />
+	</sub-flow>
+	<sub-flow name="implementationSub_Flow" doc:id="9c48ef96-5328-4f91-bd04-2ceddd65bcd2" >
+		<set-variable doc:name="postCode" doc:id="a9650b97-c1ec-46ff-9164-1fac94b3a205" variableName="postCode" value="#[payload.postCode]" />
+		<http:request method="POST" doc:name="PostFacebookPage" doc:id="14d62c2c-fbd9-44f4-a4d9-1f0452af4378" path="/{page-id}/feed" config-ref="HTTP_Request_configuration">
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"page-id" : "183534824840300"
+}]]]></http:uri-params>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"message" : payload.message,
+	"access_token" : "EAAJ6cc2W6UwBOzFFZC9uPgtbZBNet04d2AjEuToGMJ7ShbipX7tgLgAwNhViZAZBc4ghZAtZASAmWaklXfzN8MCRNwP7SpsZCejPhWdquQrjrvW5o7mhV1ZBaMBVqWzlw0ErDl6ZBaQ57FrppnyOmYAV2nB0sT6oyGnGcHX6BYz4TlstuyPkS2SykGhgeCtzteIrdMUAXMoIZD"
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="e83318c5-31a0-441e-b12b-a6ba8baccdec">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Facebook Post posted on Page Demoforapi successfully",
+	id : payload.id,
+	postCode: vars.postCode
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="7e06ccf3-585c-4f1e-849c-b52baa558c8d" />
+	</sub-flow>
+</mule>

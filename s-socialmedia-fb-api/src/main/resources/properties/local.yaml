@@ -1,0 +1,9 @@
+api:
+  name: "s-socialMedia-fb-api"
+  port: "8086"
+  
+facebook:
+  page_id: "183534824840300"
+  page_name: "Demoforapi"
+  access_token: "EAAJ6cc2W6UwBOzFFZC9uPgtbZBNet04d2AjEuToGMJ7ShbipX7tgLgAwNhViZAZBc4ghZAtZASAmWaklXfzN8MCRNwP7SpsZCejPhWdquQrjrvW5o7mhV1ZBaMBVqWzlw0ErDl6ZBaQ57FrppnyOmYAV2nB0sT6oyGnGcHX6BYz4TlstuyPkS2SykGhgeCtzteIrdMUAXMoIZD"
+  access_token_page: "EAAJ6cc2W6UwBO3XruilqjzZAdhJcbrHmllvDD7oolYwVuOUTyvAjC8xb6VwKiioSMZADwdyt37iM96OXcR1lYAPtMtsc8uyAnzivA5PZB4JY0zruXIjbvX0A7G5zACnEYXkU3XKB2CsQL4sj4vvqTNMaMgWSWUY3HScVj4t7JLV5JkDpGf1FRczoOtLEOSPdNbtPpQNZAuEUZBzMZA2W9mu9GOWh3UJmsZD"
