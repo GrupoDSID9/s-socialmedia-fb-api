@@ -5,7 +5,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
         <http:listener-connection host="0.0.0.0" port="${api.port}" />
     </http:listener-config>
     <apikit:config name="s-socialmedia-fb-api-config" api="resource::6bfdfbd6-1d2e-4ffc-96e4-3a6ab65c6e06:s-socialmedia-fb-api:1.0.4:raml:zip:s-socialmedia-fb-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <global-property doc:name="Global Property" doc:id="5f96ab7f-a23a-4d32-9e2b-ee837173bf99" name="env" value="local" />
+    <global-property doc:name="Global Property" doc:id="5f96ab7f-a23a-4d32-9e2b-ee837173bf99" name="env" value="uat" />
     <configuration-properties doc:name="Configuration properties" doc:id="39f047a1-7cf9-401b-8666-23a71ee33b46" file="properties/${env}.yaml" />
     <http:request-config name="HTTP_Request_configuration_FB" doc:name="HTTP Request configuration" doc:id="6a88e83f-364c-4f7b-82ad-fb8553bea905">
         <http:request-connection host="graph.facebook.com" protocol="HTTPS">
