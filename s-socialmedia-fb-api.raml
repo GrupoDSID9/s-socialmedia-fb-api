@@ -8,19 +8,21 @@ protocols:
   - HTTP
 
 types:
-  SocialMediaPost:
+   SocialMediaPost:
     type: object
     properties:
       postCode: string
       title: string
       message: string
-      toSocialMedia:
+      author: string
+      timestamp: string
+      toSocialMedia: 
         type: string
         enum: [FB]
+      translation: boolean
 
 
-
-/SocialMediaPost:
+/socialmediapost:
   post:
     displayName: Facebook Post
     description: Creates a Facebook Post
