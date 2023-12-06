@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd">
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
     <http:listener-config name="s-socialmedia-fb-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${api.port}" />
     </http:listener-config>
-    <apikit:config name="s-socialmedia-fb-api-config" api="resource::6bfdfbd6-1d2e-4ffc-96e4-3a6ab65c6e06:s-socialmedia-fb-api:1.0.2:raml:zip:s-socialmedia-fb-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="s-socialmedia-fb-api-config" api="resource::6bfdfbd6-1d2e-4ffc-96e4-3a6ab65c6e06:s-socialmedia-fb-api:1.0.4:raml:zip:s-socialmedia-fb-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <global-property doc:name="Global Property" doc:id="5f96ab7f-a23a-4d32-9e2b-ee837173bf99" name="env" value="local" />
     <configuration-properties doc:name="Configuration properties" doc:id="39f047a1-7cf9-401b-8666-23a71ee33b46" file="properties/${env}.yaml" />
     <http:request-config name="HTTP_Request_configuration_FB" doc:name="HTTP Request configuration" doc:id="6a88e83f-364c-4f7b-82ad-fb8553bea905">
@@ -19,4 +20,14 @@
     <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5d82d33a-d2a2-4c98-ad18-dc39f745467f">
         <http:request-connection host="graph.facebook.com" protocol="HTTPS" />
     </http:request-config>
+    <email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="44747b63-fe22-48e5-b10b-52c6c9a68d80">
+        <email:smtps-connection host="smtp.gmail.com" user="hack9Catedra@gmail.com" password="lffw oddo sljs qwho">
+            <tls:context>
+                <tls:trust-store insecure="true" />
+            </tls:context>
+        </email:smtps-connection>
+    </email:smtp-config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="4a203f7f-a272-4754-8319-2654890043dd" file="properties/${env}.yaml" key="hackathon9" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
 </mule>

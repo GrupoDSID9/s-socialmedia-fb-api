@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
     <flow name="s-socialmedia-fb-api-main">
         <http:listener config-ref="s-socialmedia-fb-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -24,6 +24,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">400</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="9aaa3b5a-f070-404d-8090-a99755b0a036" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform doc:name="Transform Message">
@@ -37,6 +38,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">404</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="079b2636-58b7-4d62-9913-7e1f070f77f8" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
                 <ee:transform doc:name="Transform Message">
@@ -50,6 +52,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">405</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="36c0ddf4-fa87-4384-aef1-8de435a5df55" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
                 <ee:transform doc:name="Transform Message">
@@ -63,6 +66,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">406</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="19712b4d-b8d8-4f7c-8cb6-96eaa4ad3a22" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
                 <ee:transform doc:name="Transform Message">
@@ -76,6 +80,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">415</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="26290c33-1fc7-47e9-9acc-599b9c035d05" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
                 <ee:transform doc:name="Transform Message">
@@ -89,6 +94,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">501</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="03f25658-83d2-41f4-a439-ed6791052362" />
             </on-error-propagate>
         </error-handler>
     </flow>
@@ -119,7 +125,33 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="post:\SocialMediaPost:application\json:s-socialmedia-fb-api-config">
-        <flow-ref doc:name="post:\s-socialmedia-fb-api-Sub_Flow" doc:id="62778ba4-2909-4b84-a771-7505310166e6" name="implementationSub_Flow" />
+    <flow name="post:\socialmediapost:application\json:s-socialmedia-fb-api-config">
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="9bf20150-5e16-43d4-9dde-eb853915ed7d" variableName="setPayload" />
+		<flow-ref doc:name="post:\s-socialmedia-fb-api-Sub_Flow" doc:id="62778ba4-2909-4b84-a771-7505310166e6" name="implementationSub_Flow" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="917d301a-245b-4436-8ff3-ed7f3dac4d9d" when="#[error.errorMessage.attributes.statusCode != 200]">
+                <logger level="INFO" doc:name="Logger" doc:id="43f33499-29c1-409e-945c-e8ab84d581de" message="Error no publicado" />
+                <ee:transform doc:name="Transform Message" doc:id="26b66563-9c37-4eb8-a844-84813620611d">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	statusCode: error.errorMessage.attributes.statusCode,
+	errorType: error.errorMessage.attributes.reasonPhrase,
+	payload: vars.setPayload
+	
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <email:send doc:name="Send" doc:id="17ea659c-a2ec-46ef-bef9-2e224dee102f" config-ref="Email_SMTP" fromAddress="hackathonDISID9@gmail.com" subject="Error en la publicación Facebook">
+                    <email:to-addresses>
+                        <email:to-address value="markopylypyuk@gmail.com" />
+                        <email:to-address value="hack9catedra@gmail.com" />
+                    </email:to-addresses>
+                    <email:body contentType="text/plain" />
+                </email:send>
+            </on-error-propagate>
+		</error-handler>
     </flow>
 </mule>
