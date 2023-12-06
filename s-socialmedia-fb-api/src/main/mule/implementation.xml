@@ -45,13 +45,13 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
 			<http:uri-params><![CDATA[#[output application/java
 ---
 {
-	"page-id" : "183534824840300"
+	"page-id" : p('secure::facebook.page_id')
 }]]]></http:uri-params>
 			<http:query-params><![CDATA[#[output application/java
 ---
 {
 	"message" : payload.message,
-	"access_token" : "EAAJ6cc2W6UwBOzFFZC9uPgtbZBNet04d2AjEuToGMJ7ShbipX7tgLgAwNhViZAZBc4ghZAtZASAmWaklXfzN8MCRNwP7SpsZCejPhWdquQrjrvW5o7mhV1ZBaMBVqWzlw0ErDl6ZBaQ57FrppnyOmYAV2nB0sT6oyGnGcHX6BYz4TlstuyPkS2SykGhgeCtzteIrdMUAXMoIZD"
+	"access_token" : p('secure::facebook.access_token')
 }]]]></http:query-params>
 		</http:request>
 		<ee:transform doc:name="Transform Message" doc:id="e83318c5-31a0-441e-b12b-a6ba8baccdec">
