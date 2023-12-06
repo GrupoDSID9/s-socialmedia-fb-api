@@ -146,7 +146,6 @@ output application/json
                 </ee:transform>
                 <email:send doc:name="Send" doc:id="17ea659c-a2ec-46ef-bef9-2e224dee102f" config-ref="Email_SMTP" fromAddress="hackathonDISID9@gmail.com" subject="Error en la publicación Facebook">
                     <email:to-addresses>
-                        <email:to-address value="markopylypyuk@gmail.com" />
                         <email:to-address value="hack9catedra@gmail.com" />
                     </email:to-addresses>
                     <email:body contentType="text/plain" />
