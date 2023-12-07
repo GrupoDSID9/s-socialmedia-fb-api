@@ -14,9 +14,6 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
             </http:authentication>
         </http:request-connection>
     </http:request-config>
-    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4e771f0e-7d83-41d8-b7b2-c69d9b3b4501">
-        <http:listener-connection host="0.0.0.0" port="8081" />
-    </http:listener-config>
     <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5d82d33a-d2a2-4c98-ad18-dc39f745467f">
         <http:request-connection host="graph.facebook.com" protocol="HTTPS" />
     </http:request-config>
@@ -27,7 +24,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
             </tls:context>
         </email:smtps-connection>
     </email:smtp-config>
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="4a203f7f-a272-4754-8319-2654890043dd" file="properties/${env}.yaml" key="hackathon9" >
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="4a203f7f-a272-4754-8319-2654890043dd" file="properties/${env}.yaml" key="${secure.key}" >
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
 </mule>
