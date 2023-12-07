@@ -1,6 +1,6 @@
 api:
   name: "s-socialMedia-fb-api"
-  port: "8084"
+  port: "8081"
   
 facebook:
   page_id: "![6kSgUK6sfy2ZeWoYFZmk1g==]"
